@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>CAN Live Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="index.css" rel="stylesheet" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>CAN Live Viewer</h1>
+
+    <div class="dbc-controls">
+      <label class="file">
+        <input id="dbcA" type="file" accept=".dbc,text/plain" />
+        <span>Upload DBC 1</span>
+      </label>
+      <label class="file">
+        <input id="dbcB" type="file" accept=".dbc,text/plain" />
+        <span>Upload DBC 2</span>
+      </label>
+      <button id="clearDbc" class="ghost">Clear DBCs</button>
+    </div>
+
+    <div class="view-switch">
+      <button id="btnBars" class="primary">Bars view</button>
+      <button id="btnTable" class="ghost">Table view</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="status">
+      <div><strong>Firebase:</strong> <span id="fbStatus">not connected</span></div>
+      <div><strong>Auth:</strong> <span id="authStatus">n/a</span></div>
+      <div><strong>DBC loaded:</strong> <span id="dbcStatus">none</span></div>
+      <div><strong>Listening path:</strong> <code>/can/live</code></div>
+    </section>
+
+    <section class="filters table-only">
+      <input id="filterId" placeholder="Filter by CAN ID (e.g., 0x123 or 291)" />
+      <input id="filterName" placeholder="Filter by message name" />
+      <select id="sortBy">
+        <option value="ts">Sort by time (newest first)</option>
+        <option value="id">Sort by CAN ID</option>
+        <option value="name">Sort by name</option>
+      </select>
+      <button id="clearFilters" class="ghost">Clear filters</button>
+    </section>
+
+    <!-- Bars view -->
+    <section id="bars" class="bars">
+      <div class="bars-controls">
+        <div class="small muted"><code>/can/buffer</code></div>
+        <form id="addMetricForm" class="add-metric" autocomplete="off">
+          <input id="metricName" placeholder="Signal name (e.g., PM_dcBusVolt)" required />
+          <input id="metricMin" type="number" step="any" placeholder="Min" required />
+          <input id="metricMax" type="number" step="any" placeholder="Max" required />
+          <input id="metricUnit" placeholder="Unit (optional)" />
+          <button type="submit">Add</button>
+        </form>
+      </div>
+      <div id="barsGrid" class="bars-grid"></div>
+    </section>
+
+    <!-- Table view -->
+    <section class="table-wrap hidden">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:12rem;">Time (EST/EDT)</th>
+            <th>Chan</th>
+            <th>CAN ID</th>
+            <th>Name</th>
+            <th>Signals / Raw</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- Your bundler should emit build.js -->
+  <script src="bundle.js"></script>
+</body>
+</html>
